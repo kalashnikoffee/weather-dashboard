@@ -9,14 +9,79 @@
     <!--JQUERY DIRECTORY-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <!--BOOTSTRAP LINK-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <!--FONTAWESOME LINK-->
     <script src="https://use.fontawesome.com/616f3ba0b2.js"></script>
     <!--MOMENT.JS LINK-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-    <title>Document</title>
+    <title>Weather Dashboard</title>
 </head>
 <body>
+        <!--Box 1/3 Header-->
+        <header class="container-fluid">
+                <div class="text-center weather-dashboard h1 p-3">Weather Dashboard</div>
+          
+             </header>
+
+             <!--Box 2/3 Search function-->
+             <div class="container-fluid main-container">
+                <div class="row">
+
+                   <!-- -->
+                    <div class="col-md-3 col-sm-4 search-section">
+                      <div class="search-for-city">Weather Search:</div>
+                      <form class="form-group">
+                         <input type="text" id="city-input" placeholder="City">
+                         <button class="btn btn-primary" id="city-input-button">Submit</button>
+                      </form>
+                      <div class="previous-searches" id="previous-searches"></div>
+                      <buton class="btn btn-secondary mt-2" id="clear-button">Clear History</button>
+                   </div>
+
+                  <!--temp box 1/2. displays before a search is done, then gets hidden-->
+                   <div class="col-md-9 col-sm-8">
+                      <div class="first-screen-load" id="first-screen-load">
+                         <h2>Coffee Weather Forecast</h2>
+                         <p>Search Results return here</p>
+                      </div>
+
+                      <!--temp box 2/2. Invisible until search is done -->
+                      <div class="weather-after-search" id="weather-after-search" style="display: none;">
+                         <div class="row">
+                            <div class="todays-weather mx-3">
+                               <div class="main-city-info" id="main-city-info"></div>
+                               <div class="weather-data" id="todays-temperature"></div>
+                               <div class="weather-data" id="todays-humidity"></div>
+                               <div class="weather-data" id="todays-wind-speed"></div>
+                               <div class="weather-data" id="todays-uv-index"></div>
+                            </div>
+                         </div>
+
+                         <!---->
+                         <!-- <div class="row mt-3">
+                            <div class="col five-day-forecast mx-3">
+                               <div class="row">
+                                  <div class="five-day-forecast-text h2 mb-3">5-Day Forecast</div>
+                               </div> -->
+
+                               <!--div for 5 day forecast-->
+                               <div class="row">
+                                  <div id="five-days-displayed">
+                                     <div class="forecast-days" id="day-one-display"></div>
+                                     <div class="forecast-days" id="day-two-display"></div>
+                                     <div class="forecast-days" id="day-three-display"></div>
+                                     <div class="forecast-days" id="day-four-display"></div>
+                                     <div class="forecast-days" id="day-five-display"></div>
+                                  </div>
+
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+                   </div>
+                </div>
+          
+             </div>
     
 </body>
 </html>
