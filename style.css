@@ -1,0 +1,24 @@
+body{
+    background-image: url(assets/images/papyrus.png); 
+    
+ }
+ .todays-row {
+     background-color: #99b3ff;
+     color: white;
+     padding-bottom: 15px;
+     margin-right: 20px;
+ }
+ /* .container-fluid {
+    
+ }
+ html{
+    
+ } */
+ #day-one-display, #day-two-display, #day-three-display, #day-four-display, #day-five-display{
+     float: left;
+     margin: 15px;
+     padding: 10px;
+     border: groove;
+     background-color: #99b3ff;
+     color: white;
+ }
