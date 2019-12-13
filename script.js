@@ -1,24 +1,31 @@
-var locationUserInput = $("#city-input");
-var locationInputButton = $("#city-input-button");
-var TodaysHumidity = $("#todays-humidity")
-var TodaysTemperature = $("#todays-temperature")
-var TodaysWindSpeed = $("#todays-wind-speed")
-var TodaysUvIndex = $("#todays-uv-index")
-var dayOneDisplayDiv = $("#day-one-display")
-var dayTwoDisplayDiv = $("#day-two-display")
-var dayThreeDisplayDiv = $("#day-three-display")
-var dayFourDisplayDiv = $("#day-four-display")
-var dayFiveDisplayDiv = $("#day-five-display")
-var mainCityInfoDiv = $("#main-city-info")
-var citySearchHistoryDiv = $("#previous-searches")
-var firstScreenLoadDiv = $("#first-screen-load")
-var weatherAfterSearchDiv = $("#weather-after-search")
+//DECLARE VARIABLES--------------------------------------------------------------
 
-var citySearchHistory = [];
-var currentCitySearch = "";
+//WEATHER FACTORS
+var TodaysHumidity = $("#todays-humidity"); //
+var TodaysTemperature = $("#todays-temperature"); //
+var TodaysWindSpeed = $("#todays-wind-speed"); //
+var TodaysUvIndex = $("#todays-uv-index");  //
+//USER INPUTS
+var locationUserInput = $("#city-input"); //
+var locationInputButton = $("#city-input-button"); //
+//5 DAY FORECAST
+var dayOneDisplay = $("#day-one-display"); //
+var dayTwoDisplay = $("#day-two-display"); //
+var dayThreeDisplay = $("#day-three-display"); //
+var dayFourDisplay = $("#day-four-display"); //
+var dayFiveDisplay = $("#day-five-display"); //
+//MAIN FORECAST
+var CityInfo = $("#main-city-info"); //
+//SEARCH HISTORY / CLEAR
+var searchHistoryBox = $("#previous-searches"); //
+var searchHistory = []; //
+var searchInput = ""; //
+//TRANSITION ELEMENTS
+var firstScreenLoadDiv = $("#first-screen-load"); //
+var weatherAfterSearchDiv = $("#weather-after-search"); //
 
-//Weather icon query setup
-//http://openweathermap.org/img/wn/10d@2x.png <<----------------10d bit is what reps the icon
+//WEATHER ICON REFERENCE TABLE
+//http://openweathermap.org/img/wn/10d@2x.png <<---10d bit is what reps the icon
 // Day icon	Night icon	Description
 // 01d.png 	01n.png 	clear sky
 // 02d.png 	02n.png 	few clouds
@@ -29,92 +36,74 @@ var currentCitySearch = "";
 // 11d.png 	11n.png 	thunderstorm
 // 13d.png 	13n.png 	snow
 // 50d.png 	50n.png 	mist
-var baseIconURL = "https://openweathermap.org/img/wn/"
-var baseIconURLsuffix = "@2x.png"
 
+//WEATHER ICONS
+var iconURLBeg = "https://openweathermap.org/img/wn/"; //
+var iconURLEnd = "@2x.png"; //
 
-// FUNCTIONS
-// Open the weather function with a clear function to clear out previous search info
-function clearDailyForecast() {
-   dayOneDisplayDiv.empty();
-   dayTwoDisplayDiv.empty();
-   dayThreeDisplayDiv.empty();
-   dayFourDisplayDiv.empty();
-   dayFiveDisplayDiv.empty();
-   mainCityInfoDiv.empty();
-
+// FUNCTIONS ------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+// CLEAR ALL FORECASTS
+function clearForecast() {
+   dayOneDisplay.empty();
+   dayTwoDisplay.empty();
+   dayThreeDisplay.empty();
+   dayFourDisplay.empty();
+   dayFiveDisplay.empty();
+   CityInfo.empty();
 };
 
-// reference local storage to get previous search info
-// assign previous cities to citySearchHistory
-function getPreviousCities() {
-   citySearchHistory = JSON.parse(localStorage.getItem("city"))
-   console.log("Previous Cities Working")
-   console.log(citySearchHistory)
-//if local storage is empty, leave the function
-   if (citySearchHistory === null) {
-      citySearchHistory = [];
-   }
-
-//reversing the order so that the previous searches section is reverse order (so most recent at the top)
-//loop through the array
-citySearchHistory = citySearchHistory.reverse();
-
-citySearchHistoryDiv.empty();
-
-for (var i = 0; i < citySearchHistory.length; i++) {
-
-   
+//PULL FROM LOCAL STORAGE - SEARCH HISTORY ------------------------------------
+function cityHistory() {
+   searchHistory = JSON.parse(localStorage.getItem("city"));
+   console.log("Previous Cities Working");
+   console.log(searchHistory);
+   if (searchHistory === null) {
+      searchHistory = [];
+   };
+//CONT.. Moves recent search to top
+searchHistory = searchHistory.reverse();
+searchHistoryBox.empty();
+//CONT.. 
+for (var i = 0; i < searchHistory.length; i++) {
    var newPreviousCityDiv = $("<div>");
-   newPreviousCityDiv = newPreviousCityDiv.attr("class", "previous-searches-button")
-   newPreviousCityDiv.html(citySearchHistory[i])
-
-   
-   citySearchHistoryDiv.append(newPreviousCityDiv);
-
-}
-//event listener
-$(".previous-searches-button").on("click", callWeatherData);
+   newPreviousCityDiv = newPreviousCityDiv.attr("class", "previous-searches-button");
+   newPreviousCityDiv.html(searchHistory[i]);
+   searchHistoryBox.append(newPreviousCityDiv);
 };
 
-function storeData(event) {
+//EVENT LISTENER - CLICK TO GET WEATHER ---------------------------------------
+$(".previous-searches-button").on("click", pullForecastInfo);
+};
+
+//STORE DATA
+function dataStorage(event) {
    event.preventDefault();
-
-   currentCitySearch = locationUserInput.val();
-
-   if (currentCitySearch === "") {
-      alert("Please put in a valid city")
+   searchInput = locationUserInput.val();
+   if (searchInput === "") {
+      alert("You gotta type a city in the search my dude")
       return
-   }
-   console.log(citySearchHistory)
-   citySearchHistory.push(currentCitySearch);
-
-   localStorage.setItem("city", JSON.stringify(citySearchHistory))
-
+   };
+   console.log(searchHistory);
+   searchHistory.push(searchInput);
+   localStorage.setItem("city", JSON.stringify(searchHistory));
 };
 
-function callWeatherData(event) {
-   event.preventDefault();
-   clearDailyForecast();
-   console.log('hello')
-   //getting the text from the button
-   var thisButtonsCity = $(this).text();
-   todaysWeather(thisButtonsCity);
-};
-
+//--------------------------------------------------------------------------------------
+//WEATHER GETTER FUNCTION
+//THIS IS BY FAR THE STUPIDEST FUNCTION I'VE EVER WORKED ON
 function todaysWeather(cityName) {
-   var weatherURL = "https://api.openweathermap.org/data/2.5/weather?q=";
-   var uviURL = "https://api.openweathermap.org/data/2.5/uvi?"
-   var fiveDayURL = "https://api.openweathermap.org/data/2.5/forecast?"
-   // var userInput = locationUserInput.val() + "&";
+   var apiURL = "https://api.openweathermap.org/data/2.5/weather?q=";
+   var uvURL = "https://api.openweathermap.org/data/2.5/uvi?";
+   var fiveDayURL = "https://api.openweathermap.org/data/2.5/forecast?";
    var apiKey = "appid=3c98be5119ec5cf431d72d940860a3bc";
-   var queryURL = weatherURL + cityName + "&" + apiKey;
+   var queryURL = apiURL + cityName + "&" + apiKey;
    var lat = "";
    var long = "";
    var cityID = "";
    var cityNameText = "";
-
-   // if there are no previous searches, show the initial search screen and return. if there are previous searches, show the most recent search. and show this for all future searches.
+//--------------------------------
+   // if no previous searches -> show main search screen. if yes previous searches -> show most recent/future search
    if (cityName === undefined) {
       firstScreenLoadDiv.css("display", "block");
       weatherAfterSearchDiv.css("display", "none");
@@ -123,8 +112,8 @@ function todaysWeather(cityName) {
       firstScreenLoadDiv.css("display", "none");
       weatherAfterSearchDiv.css("display", "block");
 
-   }
-
+   };
+//----------------------------------
    // this call sets the weather data for today
    $.ajax({
       url: queryURL,
@@ -173,20 +162,19 @@ function todaysWeather(cityName) {
          $("#main-city-info").append(todaysIconElement)
 
       })
-
+//-----------------------------------
    // this sets the uv index for today. it was a seperate API for this so I set it up seperately. i set a timeout because I was not able to populate my completeuviurl quickly enough with the lon and lat, but this delay allowed it enough time to populate. i couldn't think of another way to get the long/lat
    setTimeout(function () {
-      var completeUviURL = uviURL + apiKey + lat + long;
+      var completeUviURL = uvURL + apiKey + lat + long;
       $.ajax({
          url: completeUviURL,
          method: "GET"
       }).then(
          function (response) {
             TodaysUvIndex.text("UV Index: " + response.value);
-         }
-      )
-   }, 500);
+         })}, 100);
 
+//TIME FOR THE BIG KAHUNA -------------------------------------------------------
    // this call sets the weather data for five-day forecast
    setTimeout(function () {
       var completeIdURL = fiveDayURL + apiKey + cityID;
@@ -195,190 +183,136 @@ function todaysWeather(cityName) {
          method: "GET"
       }).then(
          function (response) {
-            // defining all the dates here. I'm takinga UNIX code, multiplying that number by 1000 to get milliseconds instead of seconds, then using JavaScript date functions to get the data I need.
             var todaysDate = new Date();
             var currentDate = new Date();
             currentDate.setDate(currentDate.getDate() + 1);
-            
-            // setting up date 1 for forecast
+            // DAY 1 -----------------------------------------------------------
             var month1 = currentDate.getMonth() + 1;
             var day1 = currentDate.getDate();
             var year1 = currentDate.getFullYear();
-            
-            // increasing date by 1 then setting day 2
+            // DAY 2 -----------------------------------------------------------
             currentDate.setDate(currentDate.getDate() + 1);
             var month2 = currentDate.getMonth() + 1;
             var day2 = currentDate.getDate();
             var year2 = currentDate.getFullYear();
-            
-            // increasing date by 1 then setting day 2
+            // DAY 3 ---------------------------------------------------------
             currentDate.setDate(currentDate.getDate() + 1);
             var month3 = currentDate.getMonth() + 1;
             var day3 = currentDate.getDate();
             var year3 = currentDate.getFullYear();
-            
-            // increasing date by 1 then setting day 2
+            // DAY 4 --------------------------------------------------------
             currentDate.setDate(currentDate.getDate() + 1);
             var month4 = currentDate.getMonth() + 1;
             var day4 = currentDate.getDate();
             var year4 = currentDate.getFullYear();
-            
-            // increasing date by 1 then setting day 2
+            // DAY 5 --------------------------------------------------------
             currentDate.setDate(currentDate.getDate() + 1);
             var month5 = currentDate.getMonth() + 1;
             var day5 = currentDate.getDate();
             var year5 = currentDate.getFullYear();
-
-            // formatting all the dates
+            // add em up ----------------------------------------------------
             var formattedDate1 = month1 + "/" + day1 + "/" + year1;
             var formattedDate2 = month2 + "/" + day2 + "/" + year2;
             var formattedDate3 = month3 + "/" + day3 + "/" + year3;
             var formattedDate4 = month4 + "/" + day4 + "/" + year4;
             var formattedDate5 = month5 + "/" + day5 + "/" + year5;
-
-            // get icon sfor weather
+            // icons --------------------------------------------------------
             var icon1 = response.list[3].weather[0].icon;
             var icon2 = response.list[11].weather[0].icon;
             var icon3 = response.list[19].weather[0].icon;
             var icon4 = response.list[27].weather[0].icon;
             var icon5 = response.list[35].weather[0].icon;
-
-            // setting the URLs
+            // icons2 -------------------------------------------------------
             var icon1URL = iconURLBeg + icon1 + "@2x.png"
             var icon2URL = iconURLBeg + icon2 + "@2x.png"
             var icon3URL = iconURLBeg + icon3 + "@2x.png"
             var icon4URL = iconURLBeg + icon4 + "@2x.png"
             var icon5URL = iconURLBeg + icon5 + "@2x.png"
-
-            // creating image elements with the source
+            // icons3 ------------------------------------------------------
             var img1Element = $("<img>").attr("src", icon1URL);
             var img2Element = $("<img>").attr("src", icon2URL);
             var img3Element = $("<img>").attr("src", icon3URL);
             var img4Element = $("<img>").attr("src", icon4URL);
             var img5Element = $("<img>").attr("src", icon5URL);
-
-            // find temperature and convert to fahrenheit
+            // make that shit Imperial! ------------------------------------
             var tempF1 = Math.round((response.list[3].main.temp - 273.15) * 1.80 + 32);
             var tempF2 = Math.round((response.list[11].main.temp - 273.15) * 1.80 + 32);
             var tempF3 = Math.round((response.list[19].main.temp - 273.15) * 1.80 + 32);
             var tempF4 = Math.round((response.list[27].main.temp - 273.15) * 1.80 + 32);
             var tempF5 = Math.round((response.list[35].main.temp - 273.15) * 1.80 + 32);
-
-            // find humidity
+            // humidity ----------------------------------------------------
             var humidity1 = response.list[3].main.humidity;
             var humidity2 = response.list[11].main.humidity;
             var humidity3 = response.list[19].main.humidity;
             var humidity4 = response.list[27].main.humidity;
             var humidity5 = response.list[35].main.humidity;
-
-            // add dates  to the cards
-            dayOneDisplayDiv.append(formattedDate1 + "<br>");
-            dayTwoDisplayDiv.append(formattedDate2 + "<br>");
-            dayThreeDisplayDiv.append(formattedDate3 + "<br>");
-            dayFourDisplayDiv.append(formattedDate4 + "<br>");
-            dayFiveDisplayDiv.append(formattedDate5 + "<br>");
-
-            // add images to the cards
-            dayOneDisplayDiv.append(img1Element);
-            dayTwoDisplayDiv.append(img2Element);
-            dayThreeDisplayDiv.append(img3Element);
-            dayFourDisplayDiv.append(img4Element);
-            dayFiveDisplayDiv.append(img5Element);
-
-            // add temperatures to the cards
-            dayOneDisplayDiv.append("<br>" + "Temperature: " + tempF1 + "<br>");
-            dayTwoDisplayDiv.append("<br>" + "Temperature: " + tempF2 + "<br>");
-            dayThreeDisplayDiv.append("<br>" + "Temperature: " + tempF3 + "<br>");
-            dayFourDisplayDiv.append("<br>" + "Temperature: " + tempF4 + "<br>");
-            dayFiveDisplayDiv.append("<br>" + "Temperature: " + tempF5 + "<br>");
-
-            // add humidity to the cards
-            dayOneDisplayDiv.append("Humidity: " + humidity1 + "%");
-            dayTwoDisplayDiv.append("Humidity: " + humidity2) + "%";
-            dayThreeDisplayDiv.append("Humidity: " + humidity3) + "%";
-            dayFourDisplayDiv.append("Humidity: " + humidity4) + "%";
-            dayFiveDisplayDiv.append("Humidity: " + humidity5) + "%";
-
-
-
+            // display date on each forecast -------------------------------
+            dayOneDisplay.append(formattedDate1 + "<br>");
+            dayTwoDisplay.append(formattedDate2 + "<br>");
+            dayThreeDisplay.append(formattedDate3 + "<br>");
+            dayFourDisplay.append(formattedDate4 + "<br>");
+            dayFiveDisplay.append(formattedDate5 + "<br>");
+            // apply the icons ----------------------------------------------
+            dayOneDisplay.append(img1Element);
+            dayTwoDisplay.append(img2Element);
+            dayThreeDisplay.append(img3Element);
+            dayFourDisplay.append(img4Element);
+            dayFiveDisplay.append(img5Element);
+            // apply temp  -------------------------------------------------
+            dayOneDisplay.append("<br>" + "Temperature: " + tempF1 + "<br>");
+            dayTwoDisplay.append("<br>" + "Temperature: " + tempF2 + "<br>");
+            dayThreeDisplay.append("<br>" + "Temperature: " + tempF3 + "<br>");
+            dayFourDisplay.append("<br>" + "Temperature: " + tempF4 + "<br>");
+            dayFiveDisplay.append("<br>" + "Temperature: " + tempF5 + "<br>");
+            // apply humidity ----------------------------------------------
+            dayOneDisplay.append("Humidity: " + humidity1 + "%");
+            dayTwoDisplay.append("Humidity: " + humidity2) + "%";
+            dayThreeDisplay.append("Humidity: " + humidity3) + "%";
+            dayFourDisplay.append("Humidity: " + humidity4) + "%";
+            dayFiveDisplay.append("Humidity: " + humidity5) + "%";
          }
       )
    }, 500);
-
-
 };
 
-//if there are no previous searches, show the initial search screen and return. if there are previous searches, show the most recent search. and show this for all future searches.
-
-
-//assign todays date for weather data for today
-//converting temperature from kelvin to fahrenheit
-
-//attaching temperature to text
-//attaching humidity to text
-//attaching wind speed
-//attach UV Index - assigning lat and long for the UV Index
-//getting city name
-//get and setting today's date
-//Set the uv index for today. 
-
-//Set the weather data for five-day forecast
-
-// defining all the dates here
-
-// setting up date 1 for forecast
-// increasing date by 1 then setting day 2
-// increasing date by 1 then setting day 2
-// increasing date by 1 then setting day 2            
-// increasing date by 1 then setting day 2
-
-
-// formatting all the dates
-
-
-// get icons
-
-function presentTodaysWeatherData(event) {
+//USE THAT BIG MOFO AND CLEAR SHIT OUT
+function pullForecastInfo(event) {
    event.preventDefault();
+   clearForecast();
+   var thisButtonsCity = $(this).text();
+   todaysWeather(thisButtonsCity);
+   console.log('MAKE IT RAIN');
+};
 
-   clearDailyForecast();
-
+function mainWeatherDisplay(event) {
+   event.preventDefault();
+   clearForecast();
    var userInput = locationUserInput.val();
-
    todaysWeather(userInput);
-
-   citySearchHistory = [];
-   getPreviousCities();
-
+   searchHistory = [];
+   cityHistory();
 };
 
-function clearSearchHistory(event) {
+function clearSearch(event) {
    event.preventDefault();
-
-   citySearchHistory = [];
-
-   localStorage.setItem("city", JSON.stringify(citySearchHistory))
-
-   citySearchHistoryDiv.empty();
-
-
+   searchHistory = [];
+   localStorage.setItem("city", JSON.stringify(searchHistory))
+   searchHistoryBox.empty();
 }
 
 function initialLoad() {
-   if (citySearchHistory.length === 0) {
+   if (searchHistory.length === 0) {
       return
    } else {
-      todaysWeather(citySearchHistory[0])
+      todaysWeather(searchHistory[0])
    }
 }
 
-// Call previous cities function and and populate buttons their buttons
-getPreviousCities();
+// CALL HISTORY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+cityHistory();
 
-// Call todaysWeather function- show my most recent search results
+// CALL IT ALL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 initialLoad();
-
-locationInputButton.on("click", storeData);
-locationInputButton.on("click", presentTodaysWeatherData);
-$("#clear-button").on("click", clearSearchHistory);
-
+locationInputButton.on("click", dataStorage);
+locationInputButton.on("click", mainWeatherDisplay);
+$("#clear-button").on("click", clearSearch);
