@@ -58,13 +58,49 @@ function getPreviousCities() {
 
 //reversing the order so that the previous searches section is reverse order (so most recent at the top)
 //loop through the array
+citySearchHistory = citySearchHistory.reverse();
 
+citySearchHistoryDiv.empty();
 
-//create a div with innerHTML = city
-//append that button to the section
+for (var i = 0; i < citySearchHistory.length; i++) {
 
+   
+   var newPreviousCityDiv = $("<div>");
+   newPreviousCityDiv = newPreviousCityDiv.attr("class", "previous-searches-button")
+   newPreviousCityDiv.html(citySearchHistory[i])
+
+   
+   citySearchHistoryDiv.append(newPreviousCityDiv);
+
+}
 //event listener
-//getting the text from the button
+$(".previous-searches-button").on("click", callWeatherData);
+};
+
+function storeData(event) {
+   event.preventDefault();
+
+   currentCitySearch = locationUserInput.val();
+
+   if (currentCitySearch === "") {
+      alert("Please put in a valid city")
+      return
+   }
+   console.log(citySearchHistory)
+   citySearchHistory.push(currentCitySearch);
+
+   localStorage.setItem("city", JSON.stringify(citySearchHistory))
+
+};
+
+function callWeatherData(event) {
+   event.preventDefault();
+   clearDailyForecast();
+   console.log('hello')
+   //getting the text from the button
+   var thisButtonsCity = $(this).text();
+   todaysWeather(thisButtonsCity);
+};
 
 function todaysWeather(cityName) {
    var weatherURL = "https://api.openweathermap.org/data/2.5/weather?q=";
@@ -302,5 +338,47 @@ function todaysWeather(cityName) {
 
 // get icons
 
+function presentTodaysWeatherData(event) {
+   event.preventDefault();
 
+   clearDailyForecast();
+
+   var userInput = locationUserInput.val();
+
+   todaysWeather(userInput);
+
+   citySearchHistory = [];
+   getPreviousCities();
+
+};
+
+function clearSearchHistory(event) {
+   event.preventDefault();
+
+   citySearchHistory = [];
+
+   localStorage.setItem("city", JSON.stringify(citySearchHistory))
+
+   citySearchHistoryDiv.empty();
+
+
+}
+
+function initialLoad() {
+   if (citySearchHistory.length === 0) {
+      return
+   } else {
+      todaysWeather(citySearchHistory[0])
+   }
+}
+
+// Call previous cities function and and populate buttons their buttons
+getPreviousCities();
+
+// Call todaysWeather function- show my most recent search results
+initialLoad();
+
+locationInputButton.on("click", storeData);
+locationInputButton.on("click", presentTodaysWeatherData);
+$("#clear-button").on("click", clearSearchHistory);
 
