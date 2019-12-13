@@ -21,8 +21,8 @@ var searchHistoryBox = $("#previous-searches"); //
 var searchHistory = []; //
 var searchInput = ""; //
 //TRANSITION ELEMENTS
-var firstScreenLoadDiv = $("#first-screen-load"); //
-var weatherAfterSearchDiv = $("#weather-after-search"); //
+var onLoad = $("#first-screen-load"); //
+var weatherSearch = $("#weather-after-search"); //
 
 //WEATHER ICON REFERENCE TABLE
 //http://openweathermap.org/img/wn/10d@2x.png <<---10d bit is what reps the icon
@@ -40,6 +40,8 @@ var weatherAfterSearchDiv = $("#weather-after-search"); //
 //WEATHER ICONS
 var iconURLBeg = "https://openweathermap.org/img/wn/"; //
 var iconURLEnd = "@2x.png"; //
+
+
 
 // FUNCTIONS ------------------------------------------------------------------
 //-----------------------------------------------------------------------------
@@ -93,24 +95,24 @@ function dataStorage(event) {
 //WEATHER GETTER FUNCTION
 //THIS IS BY FAR THE STUPIDEST FUNCTION I'VE EVER WORKED ON
 function todaysWeather(cityName) {
-   var apiURL = "https://api.openweathermap.org/data/2.5/weather?q=";
-   var uvURL = "https://api.openweathermap.org/data/2.5/uvi?";
-   var fiveDayURL = "https://api.openweathermap.org/data/2.5/forecast?";
-   var apiKey = "appid=3c98be5119ec5cf431d72d940860a3bc";
-   var queryURL = apiURL + cityName + "&" + apiKey;
-   var lat = "";
-   var long = "";
-   var cityID = "";
-   var cityNameText = "";
+   var apiURL = "https://api.openweathermap.org/data/2.5/weather?q="
+   var uviURL = "https://api.openweathermap.org/data/2.5/uvi?"
+   var VDURL = "https://api.openweathermap.org/data/2.5/forecast?"
+   var apiKey = "appid=3c98be5119ec5cf431d72d940860a3bc"
+   var queryURL = apiURL + cityName + "&" + apiKey
+   var lat = ""
+   var long = ""
+   var cityID = ""
+   var cityNameText = ""
 //--------------------------------
-   // if no previous searches -> show main search screen. if yes previous searches -> show most recent/future search
+// if no previous searches -> show main search screen. if yes previous searches -> show most recent/future search
    if (cityName === undefined) {
-      firstScreenLoadDiv.css("display", "block");
-      weatherAfterSearchDiv.css("display", "none");
+      onLoad.css("display", "block");
+      weatherSearch.css("display", "none");
       return;
    } else {
-      firstScreenLoadDiv.css("display", "none");
-      weatherAfterSearchDiv.css("display", "block");
+      onLoad.css("display", "none");
+      weatherSearch.css("display", "block");
 
    };
 //----------------------------------
@@ -143,16 +145,16 @@ function todaysWeather(cityName) {
          cityNameText = response.name;
 
          // get and setting today's date
-         var todaysDate = new Date();
+         var todaysDate = new Date()
          console.log(todaysDate)
-         var todaysMonth = todaysDate.getMonth() + 1;
+         var todaysMonth = todaysDate.getMonth() + 1
          var todaysDay = todaysDate.getDate();
          var todaysYear = todaysDate.getFullYear();
 
-         var formattedToday = cityNameText + " (" + todaysMonth + "/" + todaysDay + "/" + todaysYear + ")";
+         var formattedToday = cityNameText + " (" + todaysMonth + "/" + todaysDay + "/" + todaysYear + ")"
 
-         var todaysIcon = response.weather[0].icon;
-         var todaysIconURL = iconURLBeg + todaysIcon + iconURLEnd;
+         var todaysIcon = response.weather[0].icon
+         var todaysIconURL = iconURLBeg + todaysIcon + iconURLEnd
 
          var todaysIconElement = $("<img>")
          todaysIconElement.attr("src", todaysIconURL)
@@ -161,23 +163,22 @@ function todaysWeather(cityName) {
          $("#main-city-info").append(formattedToday)
          $("#main-city-info").append(todaysIconElement)
 
-      })
-//-----------------------------------
+      });
    // this sets the uv index for today. it was a seperate API for this so I set it up seperately. i set a timeout because I was not able to populate my completeuviurl quickly enough with the lon and lat, but this delay allowed it enough time to populate. i couldn't think of another way to get the long/lat
    setTimeout(function () {
-      var completeUviURL = uvURL + apiKey + lat + long;
+      var completeUviURL = uviURL + apiKey + lat + long;
       $.ajax({
          url: completeUviURL,
          method: "GET"
       }).then(
          function (response) {
             TodaysUvIndex.text("UV Index: " + response.value);
-         })}, 100);
+         })}, 500); //must be 500 MUST BE 500
 
-//TIME FOR THE BIG KAHUNA -------------------------------------------------------
+// -------------------------------------------------------
    // this call sets the weather data for five-day forecast
    setTimeout(function () {
-      var completeIdURL = fiveDayURL + apiKey + cityID;
+      var completeIdURL = VDURL + apiKey + cityID;
       $.ajax({
          url: completeIdURL,
          method: "GET"
@@ -298,7 +299,7 @@ function clearSearch(event) {
    searchHistory = [];
    localStorage.setItem("city", JSON.stringify(searchHistory))
    searchHistoryBox.empty();
-}
+};
 
 function initialLoad() {
    if (searchHistory.length === 0) {
@@ -306,7 +307,7 @@ function initialLoad() {
    } else {
       todaysWeather(searchHistory[0])
    }
-}
+};
 
 // CALL HISTORY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 cityHistory();

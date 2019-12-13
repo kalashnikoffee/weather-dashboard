@@ -5,20 +5,20 @@
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-   <!--CSS STYLESHEET-->
-   <link rel="stylesheet" rel="stylesheet" href="assets/style.css">
    <!--JQUERY DIRECTORY-->
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
    <!--BOOTSTRAP LINK-->
-   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <!--FONTAWESOME LINK-->
-  <script src="https://use.fontawesome.com/616f3ba0b2.js"></script>
+   <!--CSS STYLESHEET-->
+      <link rel="stylesheet" type="text/css" href="assets/style.css">
+   <!--FONTAWESOME LINK-->
+      <script src="https://use.fontawesome.com/616f3ba0b2.js"></script>
    <!--MOMENT.JS LINK-->
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 
 
-   <title>Weather Dashboard</title>
+<title>Weather Dashboard</title>
 </head>
 
 <body>
@@ -32,7 +32,7 @@
    <div class="container-fluid main-container">
       <div class="row">
          <div class="col-md-3 col-sm-4 search-section">
-            <div class="search-for-city">Search for a City:</div>
+            <div class="search-for-city">City Search:</div>
             <form class="form-group">
                <input type="text" id="city-input" placeholder="City name here">
                <button class="btn btn-primary" id="city-input-button">Submit</button>
@@ -43,8 +43,8 @@
          <!--Temp Box 3/3(1/2). Display before search. Hide after-->
          <div class="col-md-9 col-sm-8">
             <div class="first-screen-load" id="first-screen-load">
-               <h2>Today's Weather, at Your Fingertips</h2>
-               <p>Your search results will appear here. Use the search box to get today's weather and a forecast for the next five days.</p>
+               <h2>WEATHER! NOW!</h2>
+               <p>Use the search box to get this week's forecast</p>
             </div>
             <!--Temp Box 3/3(2/2). Display after search. Hide before-->
             <div class="weather-after-search" id="weather-after-search" style="display: none;">
