@@ -1,20 +1,14 @@
 body{
     background-image: url(assets/images/papyrus.png); 
-    
  }
  .todays-row {
-     background-color: #99b3ff;
-     color: white;
+     background-color: #ccdcff;
+     color: black;
      padding-bottom: 15px;
      margin-right: 20px;
      border-radius: 20px;
+     border: groove;
  }
- /* .container-fluid {
-    
- }
- html{
-    
- } */
 #day-one-display, #day-two-display, #day-three-display, #day-four-display, #day-five-display{
      float: left;
      margin: 15px;
@@ -26,10 +20,53 @@ body{
  }
 
 #five-day-forecast-big-box {
-    background-color: #99b3ff;
-    color: white;
+    background-color: #ccdcff;
+    color: black;
     padding-bottom: 15px;
     margin-right: 20px;
     border-radius: 20px;    
     padding: 5px;
+    border: groove;
 }
+#UVICOLOR{
+    background-color: #dc3545;
+    color: white;
+    padding: 2px;
+    border-radius: 20%;
+    border: groove;
+}
+.container{
+    background-color: black;
+    color: white;
+    min-width: 100%;
+}
+.todays-row{
+    font-size: x-large
+}
+.todays-icon img{
+    width: 120px;
+}
+
+.main-city-info{
+    font-weight: bolder;
+    font-size: xx-large;
+}
+#todays-icon-id{
+
+}
+
+.previous-searches-button {
+    padding: 10px 16px;
+    background-color: #ffffff;
+    border: 1px solid #c2c0c4;
+    
+ }
+ #city-input{
+     height: 37px;
+     margin-top: 0px;
+     padding-bottom: 7px;
+ }
+ #clear-button {
+     margin-bottom: 5px;
+ }
+ /*MEDIA QUERY =========================================================================*/

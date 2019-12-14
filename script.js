@@ -128,13 +128,13 @@ function todaysWeather(cityName) {
          var tempF = (response.main.temp - 273.15) * 1.80 + 32;
 
          // attaching temperature to text
-         TodaysTemperature.text("Temperature: " + tempF.toFixed(2))
+         TodaysTemperature.text("Temperature: " + tempF.toFixed(2) + "° F")
 
          // attaching humidity to text
          TodaysHumidity.text("Humidity: " + response.main.humidity + "%")
 
          //attaching wind speed
-         TodaysWindSpeed.text("Wind speed: " + response.wind.speed)
+         TodaysWindSpeed.text("Wind speed: " + response.wind.speed + " MPH")
 
          // assigning lat and long for the UV Index
          lat = "&lat=" + response.coord.lat;
@@ -172,8 +172,8 @@ function todaysWeather(cityName) {
          method: "GET"
       }).then(
          function (response) {
-            TodaysUvIndex.text("UV Index: " + response.value);
-         })}, 800); //must be at least 400. 800 seems like the magic number
+            TodaysUvIndex.html("UV Index: " + '<span id="UVICOLOR">' + response.value + "</span>");
+         })}, 1000); //must be at least 400. 1000 seems like the magic number
 
 // -------------------------------------------------------
    // this call sets the weather data for five-day forecast - runs on a delay so that it doesn't return a 400 error when refreshing the page
@@ -260,11 +260,11 @@ function todaysWeather(cityName) {
             dayFourDisplay.append(img4Element);
             dayFiveDisplay.append(img5Element);
             // apply temp  -------------------------------------------------
-            dayOneDisplay.append("<br>" + "Temperature: " + tempF1 + "<br>");
-            dayTwoDisplay.append("<br>" + "Temperature: " + tempF2 + "<br>");
-            dayThreeDisplay.append("<br>" + "Temperature: " + tempF3 + "<br>");
-            dayFourDisplay.append("<br>" + "Temperature: " + tempF4 + "<br>");
-            dayFiveDisplay.append("<br>" + "Temperature: " + tempF5 + "<br>");
+            dayOneDisplay.append("<br>" + "Temperature: " + tempF1  + "° F" + "<br>");
+            dayTwoDisplay.append("<br>" + "Temperature: " + tempF2  + "° F" + "<br>");
+            dayThreeDisplay.append("<br>" + "Temperature: " + tempF3  + "° F" + "<br>");
+            dayFourDisplay.append("<br>" + "Temperature: " + tempF4  + "° F" + "<br>");
+            dayFiveDisplay.append("<br>" + "Temperature: " + tempF5  + "° F" + "<br>");
             // apply humidity ----------------------------------------------
             dayOneDisplay.append("Humidity: " + humidity1 + "%");
             dayTwoDisplay.append("Humidity: " + humidity2 + "%");
@@ -273,7 +273,7 @@ function todaysWeather(cityName) {
             dayFiveDisplay.append("Humidity: " + humidity5 + "%"); //% not showing up on display
          }
       )
-   }, 800);
+   }, 1000); // this call sets the weather data for five-day forecast - runs on a delay so that it doesn't return a 400 error when refreshing the page
 };
 
 //USE THAT BIG MOFO AND CLEAR SHIT OUT
