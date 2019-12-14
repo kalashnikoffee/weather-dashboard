@@ -73,7 +73,7 @@ body{
  }
  /*MEDIA QUERY =========================================================================*/
 
- @media screen and (max-width: 576px) {
+ /* @media screen and (max-width: 576px) {
     .search-for-city {
        text-align: center;
        font-size: 1.75rem;
@@ -98,4 +98,21 @@ body{
  @media screen and (min-width: 1054px) {
     .todays-weather {
        width: 750px;
+    }} */
+/* @media screen and (max-width: 320){
+    .col-md-9{
+        width: 30px;
+    }} */
+/* @media screen and (max-width: 320){
+    .text-center{
+        max-width: 300px;
+         
+    }} */
+/* @media screen and (max-width: 320){
+    ######{
+            
     }}
+@media screen and (max-width: 320){
+    ######{
+                    
+    }} */
