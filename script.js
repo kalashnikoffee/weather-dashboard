@@ -95,15 +95,15 @@ function dataStorage(event) {
 //WEATHER GETTER FUNCTION
 //THIS IS BY FAR THE STUPIDEST FUNCTION I'VE EVER WORKED ON
 function todaysWeather(cityName) {
-   var apiURL = "https://api.openweathermap.org/data/2.5/weather?q="
-   var uviURL = "https://api.openweathermap.org/data/2.5/uvi?"
-   var VDURL = "https://api.openweathermap.org/data/2.5/forecast?"
-   var apiKey = "appid=621e13bedef34cbb0bd965d4dfed19ee"
-   var queryURL = apiURL + cityName + "&" + apiKey
-   var lat = ""
-   var long = ""
-   var cityID = ""
-   var cityNameText = ""
+   var apiURL = "https://api.openweathermap.org/data/2.5/weather?q=";
+   var uviURL = "https://api.openweathermap.org/data/2.5/uvi?";
+   var VDURL = "https://api.openweathermap.org/data/2.5/forecast?";
+   var apiKey = "appid=621e13bedef34cbb0bd965d4dfed19ee";
+   var queryURL = apiURL + cityName + "&" + apiKey;
+   var lat = "";
+   var long = "";
+   var cityID = "";
+   var cityNameText = "";
 //--------------------------------
 // if no previous searches -> show main search screen. if yes previous searches -> show most recent/future search
    if (cityName === undefined) {
@@ -164,7 +164,7 @@ function todaysWeather(cityName) {
          $("#main-city-info").append(todaysIconElement)
 
       });
-   // this sets the uv index for today. it was a seperate API for this so I set it up seperately. i set a timeout because I was not able to populate my completeuviurl quickly enough with the lon and lat, but this delay allowed it enough time to populate. i couldn't think of another way to get the long/lat
+   // this sets the uv index for today.
    setTimeout(function () {
       var completeUviURL = uviURL + apiKey + lat + long;
       $.ajax({
@@ -173,10 +173,10 @@ function todaysWeather(cityName) {
       }).then(
          function (response) {
             TodaysUvIndex.text("UV Index: " + response.value);
-         })}, 500); //must be 500 MUST BE 500
+         })}, 800); //must be at least 400. 800 seems like the magic number
 
 // -------------------------------------------------------
-   // this call sets the weather data for five-day forecast
+   // this call sets the weather data for five-day forecast - runs on a delay so that it doesn't return a 400 error when refreshing the page
    setTimeout(function () {
       var completeIdURL = VDURL + apiKey + cityID;
       $.ajax({
@@ -273,7 +273,7 @@ function todaysWeather(cityName) {
             dayFiveDisplay.append("Humidity: " + humidity5 + "%"); //% not showing up on display
          }
       )
-   }, 500);
+   }, 800);
 };
 
 //USE THAT BIG MOFO AND CLEAR SHIT OUT
@@ -317,3 +317,4 @@ initialLoad();
 locationInputButton.on("click", dataStorage);
 locationInputButton.on("click", mainWeatherDisplay);
 $("#clear-button").on("click", clearSearch);
+
