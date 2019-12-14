@@ -1,11 +1,12 @@
 body{
-    background-image: url(assets/images/papyrus.png); 
+    background-image: url(assets/images/papyrus.png);
+    background-attachment: fixed;
  }
  .todays-row {
      background-color: #ccdcff;
      color: black;
      padding-bottom: 15px;
-     margin-right: 20px;
+     margin-right: 0px;
      border-radius: 20px;
      border: groove;
  }
@@ -23,10 +24,11 @@ body{
     background-color: #ccdcff;
     color: black;
     padding-bottom: 15px;
-    margin-right: 20px;
+    margin-right: 0px;
     border-radius: 20px;    
     padding: 5px;
     border: groove;
+    margin-left: 10px;
 }
 #UVICOLOR{
     background-color: #dc3545;
@@ -37,11 +39,13 @@ body{
 }
 .container{
     background-color: black;
-    color: white;
+    color: #ccdcff;
     min-width: 100%;
+    /* border: groove; */
 }
 .todays-row{
-    font-size: x-large
+    font-size: x-large;
+    margin-left: 10px;
 }
 .todays-icon img{
     width: 120px;
@@ -54,6 +58,7 @@ body{
     padding: 10px 16px;
     background-color: #ffffff;
     border: 1px solid #c2c0c4;
+    max-width: 280px;
     
  }
  #city-input{
@@ -69,18 +74,87 @@ body{
  .btn-primary{
      margin-left: 0px;
      margin-right: 0px;
-     max-width: 46px;
+     max-width: 44px;
  }
+ .search-section{
+     background-color: #ccdcff;
+     padding-right: 15px;
+     max-width: 320px;
+     border-radius: 20px;
+     border: groove;
+     margin-left: 10px;
+ }
+
+ .search-for-city{
+     font-weight: bold;
+     font-size: large;
+ }
+
+ @media screen and (max-width: 575px) {
+     .search-section{
+     max-width: 560px;
+     margin-left: 23px;
+     margin-right: 36px;
+     margin-bottom: 10px;
+}}
+
+@media screen and (min-width: 576px) {
+    .todays-weather {
+       width: 300px;
+    }}
+ 
+ @media screen and (min-width: 724px) {
+    .todays-weather {
+       width: 450px;
+    }}
+ 
+ @media screen and (min-width: 848px) {
+    .todays-weather {
+       width: 600px;
+    }}
+ 
+ @media screen and (min-width: 1054px) {
+    .todays-weather {
+       width: 750px;
+    }}
+
+@media screen and (max-width: 1319px) and (min-width: 575px) {
+    .search-section{
+        max-width: 200px;
+    }
+}
+
  /*MEDIA QUERY =========================================================================*/
 
- /* @media screen and (max-width: 576px) {
+  /* @media screen and (max-width: 576px) {
     .search-for-city {
        text-align: center;
        font-size: 1.75rem;
        margin-bottom: 25px;
     }}
 
- @media screen and (min-width: 576px) {
+    @media screen and (max-width: 1319px) {
+        .search-section {
+            max-width: 300px;
+
+        }}
+    @media screen and (max-width: 1319px) {
+        .search-section {
+            max-width: 280px;
+        }}
+    @media screen and (max-width: 1319px) {
+        .search-section {
+            max-width: 260px;
+        }}
+    @media screen and (max-width: 1179px) {
+        .search-section {
+            max-width: 240px;
+        }}
+@media screen and (max-width: 999px) {
+        .search-section {
+            max-width: 220px;
+        }} */
+ /*@media screen and (min-width: 576px) {
     .todays-weather {
        width: 300px;
     }}
