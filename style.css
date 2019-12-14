@@ -46,15 +46,10 @@ body{
 .todays-icon img{
     width: 120px;
 }
-
 .main-city-info{
     font-weight: bolder;
     font-size: xx-large;
 }
-#todays-icon-id{
-
-}
-
 .previous-searches-button {
     padding: 10px 16px;
     background-color: #ffffff;
@@ -65,8 +60,42 @@ body{
      height: 37px;
      margin-top: 0px;
      padding-bottom: 7px;
+     margin-left: 2px;
  }
  #clear-button {
      margin-bottom: 5px;
  }
+
+ .btn-primary{
+     margin-left: 0px;
+     margin-right: 0px;
+     max-width: 46px;
+ }
  /*MEDIA QUERY =========================================================================*/
+
+ @media screen and (max-width: 576px) {
+    .search-for-city {
+       text-align: center;
+       font-size: 1.75rem;
+       margin-bottom: 25px;
+    }}
+
+ @media screen and (min-width: 576px) {
+    .todays-weather {
+       width: 300px;
+    }}
+ 
+ @media screen and (min-width: 724px) {
+    .todays-weather {
+       width: 450px;
+    }}
+ 
+ @media screen and (min-width: 848px) {
+    .todays-weather {
+       width: 600px;
+    }}
+ 
+ @media screen and (min-width: 1054px) {
+    .todays-weather {
+       width: 750px;
+    }}
