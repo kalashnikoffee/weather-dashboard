@@ -7,6 +7,7 @@ body{
      color: white;
      padding-bottom: 15px;
      margin-right: 20px;
+     border-radius: 20px;
  }
  /* .container-fluid {
     
@@ -14,11 +15,21 @@ body{
  html{
     
  } */
- #day-one-display, #day-two-display, #day-three-display, #day-four-display, #day-five-display{
+#day-one-display, #day-two-display, #day-three-display, #day-four-display, #day-five-display{
      float: left;
      margin: 15px;
      padding: 10px;
      border: groove;
      background-color: #99b3ff;
      color: white;
+     border-radius: 20px;
  }
+
+#five-day-forecast-big-box {
+    background-color: #99b3ff;
+    color: white;
+    padding-bottom: 15px;
+    margin-right: 20px;
+    border-radius: 20px;    
+    padding: 5px;
+}

@@ -98,7 +98,7 @@ function todaysWeather(cityName) {
    var apiURL = "https://api.openweathermap.org/data/2.5/weather?q="
    var uviURL = "https://api.openweathermap.org/data/2.5/uvi?"
    var VDURL = "https://api.openweathermap.org/data/2.5/forecast?"
-   var apiKey = "appid=3c98be5119ec5cf431d72d940860a3bc"
+   var apiKey = "appid=621e13bedef34cbb0bd965d4dfed19ee"
    var queryURL = apiURL + cityName + "&" + apiKey
    var lat = ""
    var long = ""
@@ -267,10 +267,10 @@ function todaysWeather(cityName) {
             dayFiveDisplay.append("<br>" + "Temperature: " + tempF5 + "<br>");
             // apply humidity ----------------------------------------------
             dayOneDisplay.append("Humidity: " + humidity1 + "%");
-            dayTwoDisplay.append("Humidity: " + humidity2) + "%";
-            dayThreeDisplay.append("Humidity: " + humidity3) + "%";
-            dayFourDisplay.append("Humidity: " + humidity4) + "%";
-            dayFiveDisplay.append("Humidity: " + humidity5) + "%";
+            dayTwoDisplay.append("Humidity: " + humidity2 + "%");
+            dayThreeDisplay.append("Humidity: " + humidity3 + "%");
+            dayFourDisplay.append("Humidity: " + humidity4 + "%");
+            dayFiveDisplay.append("Humidity: " + humidity5 + "%"); //% not showing up on display
          }
       )
    }, 500);
